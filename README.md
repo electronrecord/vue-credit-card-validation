@@ -5,73 +5,36 @@
 
 A dependency-free Vue plugin for formatting and validating credit card form fields.
 
-A directive is provided for input masking form fields,
+How to use it in a real Vue web app:
 
-[View Demo](https://wuori.github.io/vue-credit-card-validation/example/)
-
-## Installation
-
-Via npm:
-```sh
-yarn add vue-credit-card-validation
-- OR -
+1. Install it with 
 npm install vue-credit-card-validation
-```
 
-## Using this plugin
+2. go to you app.js file (main js app config file)
+and add:
 
-Adding vue-credit-card-validation to your application is as simple as any other plugin:
+import VueCardFormat from 'vue-credit-card-validation'
 
-```js
-import Vue from 'vue';
+Vue.use(VueCardFormat)
 
-import VueCardFormat from 'vue-credit-card-validation';
+3. go to your component and attach the directive to the input field that you want to validate
+(in my case was just card number):
 
-Vue.use(VueCardFormat);
+<inpu class=""
+      v-model="card.number"
+      v-cardformat:formatCardNumber />
+      
+4. to validate the card number, we use the object this.$cardFormat:
 
-new Vue({
-  el: '#app',
-});
-```
+methods: {
+  submit () {
+    const val = this.$cardFormat.validateCardNumber(this.card.pan)
+    // now val is true or false depending on the validation
+    }
+}
 
-The `v-cardformat` directive is now available to your app. Masks can be accessed as the arg of this directive, for example:
+NOTE: u might get an error in the console with some "addEventListener" issue,
+this is due to the fact that in the directive the input.nodeName is declared with lowerCase,
+but in my case, the string was with capital letters, like INPUT.
 
-```html
-<form>
-  <div class="form-group">
-    <label>Card number</label>
-    <input class="form-control" v-cardformat:formatCardNumber>
-  </div>
-  <div class="form-group">
-    <label>Card Expiry</label>
-    <input class="form-control" v-cardformat:formatCardExpiry>
-  </div>
-  <div class="form-group">
-    <label>Card CVC</label>
-    <input class="form-control" v-cardformat:formatCardCVC>
-  </div>
-  <div class="form-group">
-    <label>Numeric input</label>
-    <input class="form-control" v-cardformat:restrictNumeric>
-  </div>
-  <button class="btn btn-primary">Submit</button>
-</form>
-```
-
-View the [advanced example](https://wuori.github.io/vue-credit-card-validation/example/) to see other functionalities that can be used with this plugin.
- 
-For further details, see the [stripe/jquery.payment](https://github.com/stripe/jquery.payment) readme.
-
-## Warning!
-
-This plugin is not intended for collection credit card data directly. Instead, it is used to format and validate the supplied card information before tokenizing it (for Stripe, etc.) or otherwise storing it securely.
-
-Using (Stripe Elements)[https://stripe.com/docs/stripe-js/elements/quickstart] will offer much of the same functionality with much easier implementation and PCI compliance.
-
-## Credits
-
-This plugin was originally a clone of [samturrell/vue-stripe-payment](https://github.com/samturrell/vue-stripe-payment) but was rewritten to include the methods provided by [stripe/jquery-payment](https://github.com/stripe/jquery.payment).
-
-## :copyright: License
-
-[MIT](http://opensource.org/licenses/MIT)
+U can contact me for further details.
